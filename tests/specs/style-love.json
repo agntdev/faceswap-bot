@@ -1,19 +1,17 @@
 [
   {
-    "name": "Love",
+    "name": "Love without selfie prompts for upload",
     "steps": [
       {
+        "send": { "callback": "style:love" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Select Love style preset"
+              "text": "No selfie yet — tap 📷 Upload Selfie to start!"
             }
           }
-        ],
-        "send": {
-          "callback": "style:love"
-        }
+        ]
       }
     ]
   }

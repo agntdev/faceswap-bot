@@ -1,19 +1,17 @@
 [
   {
-    "name": "Custom",
+    "name": "Custom without selfie prompts for upload",
     "steps": [
       {
+        "send": { "callback": "style:custom" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Enable custom prompt input"
+              "text": "No selfie yet — tap 📷 Upload Selfie to start!"
             }
           }
-        ],
-        "send": {
-          "callback": "style:custom"
-        }
+        ]
       }
     ]
   }

@@ -1,19 +1,17 @@
 [
   {
-    "name": "Upload Selfie",
+    "name": "Upload Selfie button asks for a photo",
     "steps": [
       {
+        "send": { "callback": "upload:start" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Initiate selfie upload flow"
+              "text": "Send me a selfie — one face, front-facing works best!"
             }
           }
-        ],
-        "send": {
-          "callback": "upload:start"
-        }
+        ]
       }
     ]
   }

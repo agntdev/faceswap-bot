@@ -1,17 +1,39 @@
 import { Composer } from "grammy";
+import type { Ctx } from "../bot.js";
+import { registerMainMenuItem, inlineButton, inlineKeyboard } from "../toolkit/index.js";
 
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
-// Menu: wire this into /start via registerMainMenuItem({ label: "Upload Selfie", data: "upload:start" }) if the toolkit exposes it.
+registerMainMenuItem({ label: "📷 Upload Selfie", data: "upload:start", order: 10 });
 
-const composer = new Composer();
+const composer = new Composer<Ctx>();
+
+const styleKeyboard = inlineKeyboard([
+  [inlineButton("❤️ Love", "style:love"), inlineButton("👗 Fashion", "style:fashion")],
+  [inlineButton("✨ Custom", "style:custom")],
+]);
 
 composer.callbackQuery("upload:start", async (ctx) => {
   await ctx.answerCallbackQuery();
-  await ctx.reply("Initiate selfie upload flow");
+  ctx.session.step = "awaiting_selfie";
+  await ctx.reply("Send me a selfie — one face, front-facing works best!", {
+    reply_markup: { force_reply: true, input_field_placeholder: "Tap 📎 to attach a photo…" },
+  });
+});
+
+composer.on("message:photo", async (ctx, next) => {
+  if (ctx.session.step !== "awaiting_selfie") return next();
+  const photo = ctx.message.photo;
+  const largest = photo[photo.length - 1];
+  ctx.session.selfie_file_id = largest.file_id;
+  ctx.session.step = undefined;
+  await ctx.reply("Nice! Now pick a style for your face swap:", {
+    reply_markup: styleKeyboard,
+  });
+});
+
+composer.on("message", async (ctx, next) => {
+  if (ctx.session.step !== "awaiting_selfie") return next();
+  if (ctx.message.photo) return next();
+  await ctx.reply("I need a photo, not text — tap 📎 and send a selfie!");
 });
 
 export default composer;

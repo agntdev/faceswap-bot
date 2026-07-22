@@ -1,19 +1,17 @@
 [
   {
-    "name": "Fashion",
+    "name": "Fashion without selfie prompts for upload",
     "steps": [
       {
+        "send": { "callback": "style:fashion" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Select Fashion style preset"
+              "text": "No selfie yet — tap 📷 Upload Selfie to start!"
             }
           }
-        ],
-        "send": {
-          "callback": "style:fashion"
-        }
+        ]
       }
     ]
   }
