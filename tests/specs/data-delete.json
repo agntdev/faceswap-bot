@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Delete data button shows confirmation",
+    "steps": [
+      {
+        "send": { "callback": "data:delete" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "This will erase your selfie, style preferences, and all stored data. Ready?"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Confirming delete clears data and confirms",
+    "steps": [
+      {
+        "send": { "callback": "data:delete:confirm" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "All done — your data is gone. Tap /start to start fresh."
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
